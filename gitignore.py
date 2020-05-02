@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+# Source https://github.com/sauljabin/gitignore-generator
+
 import argparse
 import os
 import sys
@@ -60,6 +62,23 @@ def process_clean():
             exec_command("rm -rf", local_path)
 
 
+def process_gitignore():
+    files = []
+    for r, d, f in os.walk(get_path(args.source)):
+        for source_file in f:
+            for key in args.keys:
+                gitignore_file = key + ".gitignore"
+                if gitignore_file.lower() in source_file.lower():
+                    files.append(os.path.join(r, source_file))
+
+    if len(files) <= 0:
+        print ("Templates not found")
+    else:
+        if args.debug:
+            print ("Files to save:", files)
+        
+
+
 def setup_args():
     parser = argparse.ArgumentParser(description="Generates .gitignore files from templates", prog="gitignore")
 
@@ -81,8 +100,7 @@ try:
     update_script()
     process_clean()
     download_sources()
+    process_gitignore()
 except Exception as e:
     print(e.message)
     exit(1)
-
-# test

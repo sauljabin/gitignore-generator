@@ -4,6 +4,11 @@ This utility creates .gitignore files from the terminal
 
 Dependencies: `git`, `python`.
 
+## Template Sources
+
+- [github.com](https://github.com/github/gitignore.git)
+- [gitignore.io](https://github.com/toptal/gitignore.git)
+
 ## Install
 
 Clone:
