@@ -5,6 +5,7 @@ import os
 version = "0.1.0"
 
 debug = True
+script_path = os.path.dirname(__file__)
 
 sources = {
     "github.com": "https://github.com/github/gitignore.git",
@@ -14,7 +15,8 @@ sources = {
 
 def exec_command(command, *parameters):
     to_exec = "{} {} {}".format(command, " ".join(parameters), "" if debug else "> /dev/null 2>&1")
-    print(to_exec)
+    if debug:
+        print(to_exec)
     return os.system(to_exec)
 
 
@@ -25,14 +27,15 @@ def check_git():
 
 def download_sources():
     for source, remote_path in sources.items():
-        if exec_command("git -C", source, "status") != 0:
-            exec_command("git clone", remote_path, source)
+        local_path = os.path.join(script_path, source)
+        if exec_command("git -C", local_path, "status") != 0:
+            exec_command("git clone", remote_path, local_path)
         else:
-            exec_command("git -C", source, "pull")
+            exec_command("git -C", local_path, "pull")
 
 
 def update_script():
-    exec_command("git pull")
+    exec_command("git -C", script_path, "pull")
 
 
 try:
