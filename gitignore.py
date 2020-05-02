@@ -39,6 +39,13 @@ def update_script():
     exec_command("git -C", script_path, "pull")
 
 
+def process_clean():
+    if args.clean:
+        for source in sources:
+            local_path = os.path.join(script_path, source)
+            exec_command("rm -rf", local_path)
+
+
 def setup_args():
     parser = argparse.ArgumentParser(description="Generates .gitignore files from templates", prog='gitignore')
 
@@ -58,6 +65,7 @@ try:
     args = setup_args()
     check_git()
     update_script()
+    process_clean()
     download_sources()
 except Exception as e:
     print(e.message)
