@@ -131,3 +131,7 @@ dmypy.json
 # IntelliJ
 
 .idea
+
+# Project
+github.com
+gitignore.io

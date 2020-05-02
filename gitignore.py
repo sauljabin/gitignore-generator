@@ -4,9 +4,7 @@ import os
 
 version = "0.1.0"
 
-commands = {
-    "git_version": "git --version"
-}
+debug = True
 
 sources = {
     "github.com": "https://github.com/github/gitignore.git",
@@ -14,20 +12,33 @@ sources = {
 }
 
 
-def exec_command(command, output=False):
-    return os.system("{}{}".format(commands[command], "" if output else " > /dev/null 2>&1"))
+def exec_command(command, *parameters):
+    to_exec = "{} {} {}".format(command, " ".join(parameters), "" if debug else "> /dev/null 2>&1")
+    print(to_exec)
+    return os.system(to_exec)
 
 
 def check_git():
-    if exec_command("git_version") != 0:
+    if exec_command("git --version") != 0:
         raise Exception("Install git first")
 
 
 def download_sources():
-    return
+    for source, remote_path in sources.items():
+        if exec_command("git -C", source, "status") != 0:
+            exec_command("git clone", remote_path, source)
+        else:
+            exec_command("git -C", source, "pull")
+
+
+def update_script():
+    exec_command("git pull")
 
 
 try:
     check_git()
+    update_script()
+    download_sources()
 except Exception as e:
     print(e.message)
+    exit(1)
