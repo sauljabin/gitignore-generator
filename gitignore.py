@@ -7,7 +7,7 @@ import os
 import re
 import sys
 
-version = "0.1.1"
+version = "0.1.2"
 script_path = os.path.dirname(__file__)
 
 sources = {
@@ -66,7 +66,7 @@ def process_clean():
 def process_gitignore():
     if len(args.keys) <= 0:
         parser.print_usage()
-        exit(0)
+        exit(1)
     files = []
     for r, d, f in os.walk(get_path(args.source)):
         for source_file in f:
@@ -79,7 +79,7 @@ def process_gitignore():
                     files.append(os.path.join(r, source_file))
 
     if len(files) <= 0:
-        print("Templates not found")
+        raise Exception("Templates not found")
     else:
         if args.debug:
             print("Templates found: {}".format(files))
@@ -116,7 +116,7 @@ def print_template_list():
                 if ".gitignore" in source_file:
                     files.append(os.path.join(r, source_file))
         if len(files) <= 0:
-            print("Templates not found")
+            raise Exception("Templates not found")
         else:
             for f in files:
                 head, tail = os.path.split(f)
