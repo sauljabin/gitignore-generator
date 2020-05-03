@@ -72,31 +72,39 @@ def process_clean():
         exec_command("rm -rf", local_path)
 
 
-def process_gitignore():
+def process_gitignore_command():
+    verify_keys()
+
+    templates = find_templates("({})\\.gitignore".format("|".join(args.keys)))
+    save_gitignore(templates)
+    exit(0)
+
+
+def find_templates_command():
+    if not args.find:
+        return
+
+    verify_keys()
+
+    templates = find_templates(".*({}).*gitignore".format("|".join(args.keys)))
+    print_templates(templates)
+    exit(0)
+
+
+def print_template_list_command():
+    if not args.list:
+        return
+
+    print("Source: {}".format(args.source))
+    templates = find_templates(".+\\.gitignore")
+    print_templates(templates)
+    exit(0)
+
+
+def verify_keys():
     if not args.keys:
         args_parser.print_usage()
         exit(1)
-
-    pattern = (
-        ".*({}).*gitignore".format("|".join(args.keys))
-        if args.find
-        else "({})\\.gitignore".format("|".join(args.keys))
-    )
-
-    templates = find_templates(pattern)
-
-    if not templates:
-        raise Exception("Templates not found")
-
-    if args.debug:
-        print("Templates found: {}".format(templates))
-
-    if args.find:
-        print_templates(templates)
-    else:
-        save_gitignore(templates)
-
-    exit(0)
 
 
 def save_gitignore(templetes):
@@ -113,21 +121,6 @@ def save_gitignore(templetes):
     gitignore.close()
 
 
-def print_template_list():
-    if not args.list:
-        return
-
-    print("Source: {}".format(args.source))
-
-    templates = find_templates(".+\\.gitignore")
-
-    if not templates:
-        raise Exception("Templates not found")
-
-    print_templates(templates)
-    exit(0)
-
-
 def print_templates(templates):
     for template in templates:
         path, template_name = os.path.split(template)
@@ -141,6 +134,13 @@ def find_templates(pattern):
         for template in files:
             if re.match(pattern.lower(), template.lower()):
                 filtered_templates.append(os.path.join(root, template))
+
+    if args.debug:
+        print("Templates found: {}".format(filtered_templates))
+
+    if not filtered_templates:
+        raise Exception("Templates not found")
+
     return filtered_templates
 
 
@@ -192,8 +192,9 @@ try:
     update_script()
     process_clean()
     download_sources()
-    print_template_list()
-    process_gitignore()
+    print_template_list_command()
+    find_templates_command()
+    process_gitignore_command()
 except Exception as e:
     print(e.message)
     exit(1)
