@@ -82,7 +82,7 @@ def process_gitignore():
         print("Templates not found")
     else:
         if args.debug:
-            print("Files to save: {}".format(files))
+            print("Templates found: {}".format(files))
         if args.find:
             for f in files:
                 head, tail = os.path.split(f)
