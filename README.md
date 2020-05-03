@@ -26,8 +26,9 @@ $ echo "alias gitignore='~/.gitignore-generator/gitignore.py'" >> ~/.zshrc
 
 ```shell script
 $ gitignore -h
-usage: gitignore [-h] [-d] [-c] [-a] [-s [{github.com,gitignore.io}]] [-v]
-                 keys [keys ...]
+usage: gitignore [-h] [-d] [-l] [-f] [-c] [-a]
+                 [-s [{github.com,gitignore.io}]] [-v]
+                 [keys [keys ...]]
 
 Generates .gitignore files from templates
 
@@ -37,6 +38,8 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           print full output
+  -l, --list            print full template list
+  -f, --find            search a template
   -c, --clean           clean sources
   -a, --append          append to existing .gitignore file
   -s [{github.com,gitignore.io}], --source [{github.com,gitignore.io}]
