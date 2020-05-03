@@ -7,7 +7,7 @@ import os
 import re
 import sys
 
-version = "0.1.0"
+version = "0.1.1"
 script_path = os.path.dirname(__file__)
 
 sources = {
@@ -15,7 +15,7 @@ sources = {
     "github.com": "https://github.com/github/gitignore.git"
 }
 
-default_source = sources.keys()[0]
+default_source = sources.keys()[1]
 
 
 def get_path(*to_join):
@@ -72,7 +72,7 @@ def process_gitignore():
         for source_file in f:
             for key in args.keys:
                 if args.find:
-                    pattern = "{}.+gitignore".format(key.lower())
+                    pattern = ".*{}.*gitignore".format(key.lower())
                 else:
                     pattern = "{}\\.gitignore".format(key.lower())
                 if re.match(pattern, source_file.lower()):

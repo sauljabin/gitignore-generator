@@ -1,13 +1,13 @@
 # gitignore-generator
 
-This utility creates .gitignore files from the terminal
+This utility creates .gitignore files from the terminal using community templates.
 
 Dependencies: `git`, `python`.
 
 ## Template Sources
 
-- [github.com](https://github.com/github/gitignore.git)
 - [gitignore.io](https://github.com/toptal/gitignore.git)
+- [github.com](https://github.com/github/gitignore.git)
 
 ## Install
 
@@ -43,6 +43,6 @@ optional arguments:
   -c, --clean           clean sources
   -a, --append          append to existing .gitignore file
   -s [{github.com,gitignore.io}], --source [{github.com,gitignore.io}]
-                        select template source, default: github.com
+                        select template source, default: gitignore.io
   -v, --version         show program's version number and exit
 ```
