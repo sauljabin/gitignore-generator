@@ -76,7 +76,22 @@ def process_gitignore():
     else:
         if args.debug:
             print ("Files to save:", files)
-        
+        save_gitignore(files)
+
+
+def save_gitignore(files):
+    if args.append:
+        gitignore = open(".gitignore", "a")
+    else:
+        gitignore = open(".gitignore", "w")
+    for f in files:
+        head, tail = os.path.split(f)
+        gitignore.write("### {}: {} ###\n\n".format(args.source, tail))
+        file_from_source = open(f, "r")
+        gitignore.writelines(file_from_source.readlines())
+        gitignore.write("\n")
+        file_from_source.close()
+    gitignore.close()
 
 
 def setup_args():
