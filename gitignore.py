@@ -12,7 +12,7 @@ script_path = os.path.dirname(__file__)
 
 sources = {
     "gitignore.io": "https://github.com/toptal/gitignore.git",
-    "github.com": "https://github.com/github/gitignore.git"
+    "github.com": "https://github.com/github/gitignore.git",
 }
 
 default_source = sources.keys()[1]
@@ -28,7 +28,9 @@ def get_command_output(command, *parameters):
 
 
 def exec_command(command, *parameters):
-    to_exec = "{} {} {}".format(command, " ".join(parameters), "" if args.debug else "> /dev/null 2>&1")
+    to_exec = "{} {} {}".format(
+        command, " ".join(parameters), "" if args.debug else "> /dev/null 2>&1"
+    )
     if args.debug:
         print(to_exec)
     return os.system(to_exec)
@@ -126,18 +128,38 @@ def print_template_list():
 
 
 def setup_args():
-    new_parser = argparse.ArgumentParser(description="Generates .gitignore files from templates", prog="gitignore")
+    new_parser = argparse.ArgumentParser(
+        description="Generates .gitignore files from templates", prog="gitignore"
+    )
 
-    new_parser.add_argument("-d", "--debug", help="print full output", action="store_true")
-    new_parser.add_argument("-l", "--list", help="print full template list", action="store_true")
-    new_parser.add_argument("-f", "--find", help="search a template", action="store_true")
+    new_parser.add_argument(
+        "-d", "--debug", help="print full output", action="store_true"
+    )
+    new_parser.add_argument(
+        "-l", "--list", help="print full template list", action="store_true"
+    )
+    new_parser.add_argument(
+        "-f", "--find", help="search a template", action="store_true"
+    )
     new_parser.add_argument("-c", "--clean", help="clean sources", action="store_true")
-    new_parser.add_argument("-a", "--append", help="append to existing .gitignore file", action="store_true")
-    new_parser.add_argument("keys", help="IDEs, Languages or OSs, accepts multiple", type=str, nargs="*")
-    new_parser.add_argument("-s", "--source",
-                            help="select template source, default: " + default_source,
-                            type=str, nargs="?", default=default_source, choices=sources.keys())
-    new_parser.add_argument("-v", "--version", action="version", version="%(prog)s " + version)
+    new_parser.add_argument(
+        "-a", "--append", help="append to existing .gitignore file", action="store_true"
+    )
+    new_parser.add_argument(
+        "keys", help="IDEs, Languages or OSs, accepts multiple", type=str, nargs="*"
+    )
+    new_parser.add_argument(
+        "-s",
+        "--source",
+        help="select template source, default: " + default_source,
+        type=str,
+        nargs="?",
+        default=default_source,
+        choices=sources.keys(),
+    )
+    new_parser.add_argument(
+        "-v", "--version", action="version", version="%(prog)s " + version
+    )
     return new_parser, new_parser.parse_args()
 
 

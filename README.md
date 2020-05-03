@@ -22,6 +22,13 @@ $ echo "alias gitignore='~/.gitignore-generator/gitignore.py'" >> ~/.bashrc
 $ echo "alias gitignore='~/.gitignore-generator/gitignore.py'" >> ~/.zshrc
 ```
 
+## Format with black
+
+```shell script
+$ pip install black
+$ black .
+```
+
 ## Commands
 
 ```shell script
