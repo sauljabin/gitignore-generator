@@ -7,7 +7,7 @@ import os
 import re
 import sys
 
-version = "0.2.1"
+version = "0.2.2"
 script_path = os.path.dirname(__file__)
 
 sources = {
@@ -79,7 +79,8 @@ def process_clean():
 def process_gitignore_command():
     verify_keys()
 
-    templates = find_templates("({})\\.gitignore".format("|".join(args.keys)))
+    keys = [re.escape(key) for key in args.keys]
+    templates = find_templates("({})\\.gitignore".format("|".join(keys)))
     save_gitignore(templates)
     exit(0)
 
@@ -90,7 +91,8 @@ def find_templates_command():
 
     verify_keys()
 
-    templates = find_templates(".*({}).*gitignore".format("|".join(args.keys)))
+    keys = [re.escape(key) for key in args.keys]
+    templates = find_templates(".*({}).*gitignore".format("|".join(keys)))
     print_templates(templates)
     exit(0)
 
