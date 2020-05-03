@@ -22,7 +22,7 @@ $ echo "alias gitignore='~/.gitignore-generator/gitignore.py'" >> ~/.bashrc
 $ echo "alias gitignore='~/.gitignore-generator/gitignore.py'" >> ~/.zshrc
 ```
 
-## Format with black
+## Format with black (python 3.6)
 
 ```shell script
 $ pip install black
@@ -47,7 +47,7 @@ optional arguments:
   -d, --debug           print full output
   -l, --list            print full template list
   -f, --find            search a template
-  -c, --clean           clean sources
+  -c, --clean           delete sources repositories
   -a, --append          append to existing .gitignore file
   -s [{github.com,gitignore.io}], --source [{github.com,gitignore.io}]
                         select template source, default: gitignore.io
