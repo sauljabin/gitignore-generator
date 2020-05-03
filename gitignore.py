@@ -34,6 +34,7 @@ def exec_command(command, *parameters):
 
     if args.debug:
         print(to_exec)
+
     return os.system(to_exec)
 
 
@@ -75,38 +76,28 @@ def process_gitignore():
     if len(args.keys) <= 0:
         args_parser.print_usage()
         exit(1)
-    files = []
-    for r, d, f in os.walk(join_to_script_path(args.source)):
-        for source_file in f:
-            for key in args.keys:
-                if args.find:
-                    pattern = ".*{}.*gitignore".format(key.lower())
-                else:
-                    pattern = "{}\\.gitignore".format(key.lower())
-                if re.match(pattern, source_file.lower()):
-                    files.append(os.path.join(r, source_file))
 
-    if len(files) <= 0:
+    templates = find_templates(
+        ".*({}).*gitignore".format("|".join(args.keys))
+        if args.find
+        else "({})\\.gitignore".format("|".join(args.keys))
+    )
+
+    if len(templates) <= 0:
         raise Exception("Templates not found")
-    else:
-        if args.debug:
-            print("Templates found: {}".format(files))
-        if args.find:
-            for f in files:
-                head, tail = os.path.split(f)
-                print(tail)
-            print("Total: {}".format(len(files)))
-        else:
-            save_gitignore(files)
+
+    if args.debug:
+        print("Templates found: {}".format(templates))
+
+    if args.find:
+        print_templates(templates)
+        exit(0)
+
+    save_gitignore(templates)
 
 
 def save_gitignore(templetes):
-    open_type = "w"
-
-    if args.append:
-        open_type = "a"
-
-    gitignore = open(".gitignore", open_type)
+    gitignore = open(".gitignore", "a" if args.append else "w")
 
     for template in templetes:
         path, template_name = os.path.split(template)
@@ -151,35 +142,31 @@ def find_templates(pattern):
 
 
 def setup_args():
-    new_parser = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         description="Generates .gitignore files from templates", prog="gitignore"
     )
 
-    new_parser.add_argument(
-        "-d", "--debug", help="print full output", action="store_true"
-    )
+    parser.add_argument("-d", "--debug", help="print full output", action="store_true")
 
-    new_parser.add_argument(
+    parser.add_argument(
         "-l", "--list", help="print full template list", action="store_true"
     )
 
-    new_parser.add_argument(
-        "-f", "--find", help="search a template", action="store_true"
-    )
+    parser.add_argument("-f", "--find", help="search a template", action="store_true")
 
-    new_parser.add_argument(
+    parser.add_argument(
         "-c", "--clean", help="delete sources repositories", action="store_true"
     )
 
-    new_parser.add_argument(
+    parser.add_argument(
         "-a", "--append", help="append to existing .gitignore file", action="store_true"
     )
 
-    new_parser.add_argument(
+    parser.add_argument(
         "keys", help="IDEs, Languages or OSs, accepts multiple", type=str, nargs="*"
     )
 
-    new_parser.add_argument(
+    parser.add_argument(
         "-s",
         "--source",
         help="select template source, default: " + default_source,
@@ -189,11 +176,11 @@ def setup_args():
         choices=sources.keys(),
     )
 
-    new_parser.add_argument(
+    parser.add_argument(
         "-v", "--version", action="version", version="%(prog)s " + version
     )
 
-    return new_parser, new_parser.parse_args()
+    return parser, parser.parse_args()
 
 
 try:
