@@ -4,6 +4,7 @@
 
 import argparse
 import os
+import re
 import sys
 
 version = "0.1.0"
@@ -70,8 +71,11 @@ def process_gitignore():
     for r, d, f in os.walk(get_path(args.source)):
         for source_file in f:
             for key in args.keys:
-                gitignore_file = key + ".gitignore"
-                if gitignore_file.lower() in source_file.lower():
+                if args.find:
+                    pattern = "{}.+gitignore".format(key.lower())
+                else:
+                    pattern = "{}\\.gitignore".format(key.lower())
+                if re.match(pattern, source_file.lower()):
                     files.append(os.path.join(r, source_file))
 
     if len(files) <= 0:
@@ -79,7 +83,13 @@ def process_gitignore():
     else:
         if args.debug:
             print("Files to save: {}".format(files))
-        save_gitignore(files)
+        if args.find:
+            for f in files:
+                head, tail = os.path.split(f)
+                print(tail)
+            print("Total: {}".format(len(files)))
+        else:
+            save_gitignore(files)
 
 
 def save_gitignore(files):
@@ -118,8 +128,9 @@ def print_template_list():
 def setup_args():
     new_parser = argparse.ArgumentParser(description="Generates .gitignore files from templates", prog="gitignore")
 
-    new_parser.add_argument("-d", "--debug", help="printfull output", action="store_true")
-    new_parser.add_argument("-l", "--list", help="printfull template list", action="store_true")
+    new_parser.add_argument("-d", "--debug", help="print full output", action="store_true")
+    new_parser.add_argument("-l", "--list", help="print full template list", action="store_true")
+    new_parser.add_argument("-f", "--find", help="search a template", action="store_true")
     new_parser.add_argument("-c", "--clean", help="clean sources", action="store_true")
     new_parser.add_argument("-a", "--append", help="append to existing .gitignore file", action="store_true")
     new_parser.add_argument("keys", help="IDEs, Languages or OSs, accepts multiple", type=str, nargs="*")
