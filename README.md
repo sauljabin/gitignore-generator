@@ -22,3 +22,24 @@ $ echo "alias gitignore='~/.gitignore-generator/gitignore.py'" >> ~/.bashrc
 $ echo "alias gitignore='~/.gitignore-generator/gitignore.py'" >> ~/.zshrc
 ```
 
+## Commands
+
+```shell script
+$ gitignore -h
+usage: gitignore [-h] [-d] [-c] [-a] [-s [{github.com,gitignore.io}]] [-v]
+                 keys [keys ...]
+
+Generates .gitignore files from templates
+
+positional arguments:
+  keys                  IDEs, Languages or OSs, accepts multiple
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d, --debug           print full output
+  -c, --clean           clean sources
+  -a, --append          append to existing .gitignore file
+  -s [{github.com,gitignore.io}], --source [{github.com,gitignore.io}]
+                        select template source, default: github.com
+  -v, --version         show program's version number and exit
+```
