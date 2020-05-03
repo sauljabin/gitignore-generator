@@ -39,7 +39,7 @@ def exec_command(command, *parameters):
 
 
 def check_git():
-    if exec_command("git --version") != 0:
+    if exec_command("git --version"):
         raise Exception("Install git first")
 
 
@@ -48,7 +48,7 @@ def download_sources():
 
         local_path = join_to_script_path(script_path, source)
 
-        if exec_command("git -C", local_path, "status") != 0:
+        if exec_command("git -C", local_path, "status"):
             exec_command("git clone", remote_path, local_path)
         else:
             exec_command("git -C", local_path, "pull")
@@ -73,17 +73,19 @@ def process_clean():
 
 
 def process_gitignore():
-    if len(args.keys) <= 0:
+    if not args.keys:
         args_parser.print_usage()
         exit(1)
 
-    templates = find_templates(
+    pattern = (
         ".*({}).*gitignore".format("|".join(args.keys))
         if args.find
         else "({})\\.gitignore".format("|".join(args.keys))
     )
 
-    if len(templates) <= 0:
+    templates = find_templates(pattern)
+
+    if not templates:
         raise Exception("Templates not found")
 
     if args.debug:
@@ -91,9 +93,10 @@ def process_gitignore():
 
     if args.find:
         print_templates(templates)
-        exit(0)
+    else:
+        save_gitignore(templates)
 
-    save_gitignore(templates)
+    exit(0)
 
 
 def save_gitignore(templetes):
@@ -118,10 +121,10 @@ def print_template_list():
 
     templates = find_templates(".+\\.gitignore")
 
-    if len(templates) <= 0:
+    if not templates:
         raise Exception("Templates not found")
-    else:
-        print_templates(templates)
+
+    print_templates(templates)
     exit(0)
 
 
