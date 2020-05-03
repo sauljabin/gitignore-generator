@@ -54,10 +54,14 @@ def download_sources():
             exec_command("git -C", local_path, "pull")
 
 
+def get_script_commit():
+    return get_command_output("git -C", script_path, "rev-parse HEAD")
+
+
 def update_script():
-    current_hash = get_command_output("git -C", script_path, "rev-parse HEAD")
+    current_hash = get_script_commit()
     exec_command("git -C", script_path, "pull")
-    new_hash = get_command_output("git -C", script_path, "rev-parse HEAD")
+    new_hash = get_script_commit()
 
     if current_hash != new_hash:
         os.execv(__file__, sys.argv)
