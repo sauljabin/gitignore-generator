@@ -31,6 +31,7 @@ $ black .
 
 ## Commands
 
+Help:
 ```shell script
 $ gitignore -h
 usage: gitignore [-h] [-d] [-l] [-f] [-c] [-a]
@@ -52,4 +53,9 @@ optional arguments:
   -s [{github.com,gitignore.io}], --source [{github.com,gitignore.io}]
                         select template source, default: gitignore.io
   -v, --version         show program's version number and exit
+```
+
+Example:
+```shell script
+$  gitignore java windows linux intellij eclipse gradle
 ```
