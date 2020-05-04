@@ -34,7 +34,7 @@ $ black .
 Help:
 ```shell script
 $ gitignore -h
-usage: gitignore [-h] [-d] [-l] [-f] [-c] [-a]
+usage: gitignore [-h] [-d] [-r] [-l] [-f] [-c] [-a]
                  [-s [{github.com,gitignore.io}]] [-v]
                  [keys [keys ...]]
 
@@ -46,6 +46,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           print full output
+  -r, --read            print found templetes
   -l, --list            print full template list
   -f, --find            search a template
   -c, --clean           delete sources repositories

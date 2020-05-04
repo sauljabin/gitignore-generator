@@ -7,7 +7,7 @@ import os
 import re
 import sys
 
-version = "0.2.2"
+version = "0.3.1"
 script_path = os.path.dirname(__file__)
 
 sources = {
@@ -85,6 +85,18 @@ def process_gitignore_command():
     exit(0)
 
 
+def print_templates_command():
+    if not args.read:
+        return
+
+    verify_keys()
+
+    keys = [re.escape(key) for key in args.keys]
+    templates = find_templates("({})\\.gitignore".format("|".join(keys)))
+    print_templates(templates, True)
+    exit(0)
+
+
 def find_templates_command():
     if not args.find:
         return
@@ -127,10 +139,13 @@ def save_gitignore(templetes):
     gitignore.close()
 
 
-def print_templates(templates):
+def print_templates(templates, full_file=False):
     for template in templates:
         path, template_name = os.path.split(template)
         print(template_name)
+        if full_file:
+            template_file = open(template, "r")
+            print(template_file.read())
     print("Total: {}".format(len(templates)))
 
 
@@ -156,6 +171,10 @@ def setup_args():
     )
 
     parser.add_argument("-d", "--debug", help="print full output", action="store_true")
+
+    parser.add_argument(
+        "-r", "--read", help="print found templetes", action="store_true"
+    )
 
     parser.add_argument(
         "-l", "--list", help="print full template list", action="store_true"
@@ -199,6 +218,7 @@ try:
     process_clean()
     download_sources()
     print_template_list_command()
+    print_templates_command()
     find_templates_command()
     process_gitignore_command()
 except Exception as e:
