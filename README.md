@@ -46,7 +46,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           print full output
-  -r, --read            print found templetes
+  -r, --read            print the found template completely
   -l, --list            print full template list
   -f, --find            search a template
   -c, --clean           delete sources repositories

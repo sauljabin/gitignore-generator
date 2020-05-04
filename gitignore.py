@@ -173,7 +173,7 @@ def setup_args():
     parser.add_argument("-d", "--debug", help="print full output", action="store_true")
 
     parser.add_argument(
-        "-r", "--read", help="print found templetes", action="store_true"
+        "-r", "--read", help="print the found template completely", action="store_true"
     )
 
     parser.add_argument(
